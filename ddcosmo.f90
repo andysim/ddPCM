@@ -666,6 +666,7 @@ end function dfsw
 !------------------------------------------------------------------------------------------------
 subroutine ptcart( label, ncol, icol, x )
 !        
+!f2py integer, intent(aux) :: ngrid
       implicit none
 !
       character (len=*), intent(in) :: label
@@ -727,6 +728,7 @@ subroutine prtsph(label,ncol,icol,x)
 !
       character (len=*), intent(in) :: label
       integer, intent(in)           :: ncol, icol
+!f2py integer, intent(aux) :: nylm
       real*8, dimension(nylm,ncol), intent(in) :: x
 !
       integer :: l, m, ind, noff, nprt, ic, j
@@ -790,6 +792,7 @@ subroutine intrhs( isph, x, xlm )
 !        
       implicit none
       integer, intent(in) :: isph
+!f2py integer, intent(aux) :: ngrid, nylm
       real*8, dimension(ngrid),  intent(in)    :: x
       real*8, dimension(nylm), intent(inout) :: xlm
 !
@@ -829,6 +832,7 @@ end subroutine intrhs
 !------------------------------------------------------------------------------------------------
 subroutine ylmbas( x, basloc, vplm, vcos, vsin )
 !        
+!f2py integer, intent(aux) :: nylm, lmax
       implicit none
       real*8, dimension(3), intent(in) :: x
       real*8, dimension(nylm), intent(out) :: basloc, vplm
@@ -903,6 +907,7 @@ end subroutine ylmbas
 !------------------------------------------------------------------------------------------------
 subroutine dbasis( x, basloc, dbsloc, vplm, vcos, vsin )
 !
+!f2py integer, intent(aux) :: nylm, lmax
       implicit none
       real*8, dimension(3),        intent(in)    :: x
       real*8, dimension(nylm),   intent(inout) :: basloc, vplm
@@ -1055,6 +1060,7 @@ end subroutine dbasis
 !------------------------------------------------------------------------------------------------
 subroutine polleg( x, y, plm )
 !          
+!f2py integer, intent(aux) :: nylm
       implicit none
       real*8,                    intent(in)    :: x, y
       real*8, dimension(nylm), intent(inout) :: plm
@@ -1102,6 +1108,7 @@ end subroutine polleg
 !------------------------------------------------------------------------------------------------
 subroutine trgev( x, y, cx, sx )
         
+!f2py integer, intent(aux) :: lmax
       implicit none
       real*8, intent(in) :: x, y
       real*8, dimension( max((lmax+1),2) ), intent(inout) :: cx, sx
@@ -1141,7 +1148,7 @@ real*8 function intmlp( t, sigma, basloc )
 !  
       implicit none
       real*8, intent(in) :: t
-      real*8, dimension(nylm), intent(in) :: sigma, basloc
+      real*8, dimension(:), intent(in) :: sigma, basloc
 !
       integer :: l, ind
       real*8  :: tt, ss, fac
@@ -1186,6 +1193,7 @@ end function intmlp
 !------------------------------------------------------------------------------------------------
 subroutine wghpot( phi, g )
 !
+!f2py integer, intent(aux) :: ncav, ngrid, nsph
       implicit none
 !
       real*8, dimension(ncav),       intent(in)  :: phi
@@ -1232,6 +1240,7 @@ end subroutine wghpot
 !------------------------------------------------------------------------------------------------
 subroutine hsnorm( u, unorm )
 !          
+!f2py integer, intent(aux) :: nylm
       implicit none
       real*8, dimension(nylm), intent(in)    :: u
       real*8,                    intent(inout) :: unorm
@@ -1300,6 +1309,7 @@ end subroutine hsnorm
 !
 subroutine adjrhs( isph, xi, vlm, basloc, vplm, vcos, vsin )
 !
+!f2py integer, intent(aux) :: ngrid, nsph, nylm, lmax
       implicit none
       integer,                       intent(in)    :: isph
       real*8, dimension(ngrid,nsph), intent(in)    :: xi
@@ -1435,6 +1445,7 @@ end subroutine header
 !-----------------------------------------------------------------------------------
 subroutine fdoka( isph, sigma, xi, basloc, dbsloc, vplm, vcos, vsin, fx )
 !        
+!f2py integer, intent(aux) :: ngrid, nsph, nylm, lmax
       implicit none
       integer,                         intent(in)    :: isph
       real*8,  dimension(nylm,nsph), intent(in)    :: sigma
@@ -1510,6 +1521,7 @@ end subroutine fdoka
 !-----------------------------------------------------------------------------------
 subroutine fdokb( isph, sigma, xi, basloc, dbsloc, vplm, vcos, vsin, fx )
 !        
+!f2py integer, intent(aux) :: ngrid, nsph, nylm, lmax
       implicit none
       integer,                         intent(in)    :: isph
       real*8,  dimension(nylm,nsph), intent(in)    :: sigma
@@ -1613,6 +1625,7 @@ subroutine fdokb( isph, sigma, xi, basloc, dbsloc, vplm, vcos, vsin, fx )
 !-----------------------------------------------------------------------------------
 subroutine fdoga( isph, xi, phi, fx )
 !        
+!f2py integer, intent(aux) :: ngrid, nsph
       implicit none
       integer,                        intent(in)    :: isph
       real*8,  dimension(ngrid,nsph), intent(in)    :: xi, phi
@@ -1670,6 +1683,7 @@ end subroutine fdoga
 !
 subroutine calcv( first, isph, pot, sigma, basloc, vplm, vcos, vsin )
 !
+!f2py integer, intent(aux) :: ngrid, nsph, nylm, lmax
       logical,                        intent(in)    :: first
       integer,                        intent(in)    :: isph
       real*8, dimension(nylm,nsph), intent(in)    :: sigma
@@ -1757,6 +1771,7 @@ end subroutine calcv
 !------------------------------------------------------------------------
 subroutine ddmkxi( s, xi)
 !
+!f2py integer, intent(aux) :: nsph, nylm, ncav
        real*8, dimension(nylm,nsph), intent(in)    :: s
        real*8, dimension(ncav),      intent(inout) :: xi
 !
@@ -1786,6 +1801,7 @@ end subroutine ddmkxi
 !------------------------------------------------------------------------
 subroutine ddmkzeta( s, zeta)
 !
+!f2py integer, intent(aux) :: nylm, nsph, ncav
        real*8, dimension(nylm,nsph), intent(in)    :: s
        real*8, dimension(ncav),      intent(inout) :: zeta
 !
